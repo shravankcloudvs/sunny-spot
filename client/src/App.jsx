@@ -24,9 +24,13 @@ export default function App() {
     if (!location) return;
     setLoading(true);
     try {
+      // const res = await axios.get("/api/sunny", {
+      //   params: { ...location, radius },
+      // });
       const res = await axios.get("/api/sunny", {
-        params: { ...location, radius },
+        params: { ...location, radius }
       });
+
       setSunnySpots(res.data);
     } catch (err) {
       console.error("Error fetching sunny spots:", err);
