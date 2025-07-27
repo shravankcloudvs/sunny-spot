@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   build: {
-    outDir: '../client', // Output to client/ so Vercel can serve it
+    outDir: 'dist', // Output to client/ so Vercel can serve it
     emptyOutDir: false,  // Prevent wiping out client/src etc.
   }
 })
