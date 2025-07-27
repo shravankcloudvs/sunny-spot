@@ -28,15 +28,6 @@ export default async function handler(req, res) {
   }
 } **/
 
-export default async function handler(req, res) {
-  const { lat, lon, radius } = req.query;
-
-  // Call weather API logic here
-  res.status(200).json([
-    {
-      name: "Sample Sunny Spot",
-      weather: "Sunny",
-      temp: 82
-    }
-  ]);
+export default function handler(req, res) {
+  res.status(200).json({ message: "API is working!" });
 }
