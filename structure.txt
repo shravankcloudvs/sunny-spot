@@ -1,0 +1,19 @@
+.
+├── api
+│   ├── server
+│   └── sunny.js
+├── client
+│   ├── README.md
+│   ├── dist
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   ├── src
+│   └── vite.config.js
+├── structure.txt
+└── vercel.json
+
+8 directories, 9 files

@@ -27,7 +27,19 @@ export default async function handler(req, res) {
     res.status(500).json({ error: "Failed to fetch weather data" });
   }
 } **/
+export default async function handler(req, res) {
+  const { lat, lon, radius } = req.query;
 
-export default function handler(req, res) {
-  res.status(200).json({ message: "API is working!" });
+  if (!lat || !lon) {
+    return res.status(400).json({ error: "Missing lat/lon" });
+  }
+
+  // Dummy response for now:
+  return res.status(200).json([
+    {
+      name: "Sunny Park",
+      weather: "Sunny",
+      temp: 75,
+    },
+  ]);
 }
