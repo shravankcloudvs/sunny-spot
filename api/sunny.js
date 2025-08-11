@@ -1,45 +1,28 @@
-// /api/sunny.js
-/** import fetch from "node-fetch";
-
 export default async function handler(req, res) {
-  const { lat, lon, radius } = req.query;
-
-  if (!lat || !lon) {
-    return res.status(400).json({ error: "Missing lat/lon" });
-  }
-
   try {
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/find?lat=${lat}&lon=${lon}&cnt=30&units=imperial&appid=${process.env.OPENWEATHER_API_KEY}`;
+    const { lat, lon, radius } = req.query;
+
+    if (!lat || !lon) {
+      return res.status(400).json({ error: 'Missing lat/lon parameters' });
+    }
+
+    const apiKey = process.env.WEATHER_API_KEY;
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
     const response = await fetch(weatherUrl);
+    if (!response.ok) {
+      throw new Error(`Weather API error: ${response.statusText}`);
+    }
+
     const data = await response.json();
 
-    const sunnySpots = data.list
-      .filter((place) => place.weather[0].main === "Clear")
-      .map((place) => ({
-        name: place.name,
-        weather: place.weather[0].description,
-        temp: place.main.temp,
-      }));
-
-    res.status(200).json(sunnySpots);
-  } catch (error) {
-    console.error("API error:", error);
-    res.status(500).json({ error: "Failed to fetch weather data" });
+    res.status(200).json({
+      location: data.name,
+      temp: data.main.temp,
+      weather: data.weather[0].description,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
-} **/
-export default async function handler(req, res) {
-  const { lat, lon, radius } = req.query;
-
-  if (!lat || !lon) {
-    return res.status(400).json({ error: "Missing lat/lon" });
-  }
-
-  // Dummy response for now:
-  return res.status(200).json([
-    {
-      name: "Sunny Park",
-      weather: "Sunny",
-      temp: 75,
-    },
-  ]);
 }
