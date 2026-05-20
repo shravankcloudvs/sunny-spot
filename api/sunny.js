@@ -74,12 +74,16 @@ export default async function handler(req, res) {
       try {
         const wikiUrl = `https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord=${spot.lat}|${spot.lon}&gsradius=10000&gslimit=5&format=json&origin=*`;
         
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+
         const wikiRes = await fetch(wikiUrl, {
           headers: {
             "User-Agent": "SunnySpotApp/1.0 (contact@example.com) fetch/1.0"
           },
-          signal: AbortSignal.timeout(2000) // Max 2 seconds for Wikipedia API
+          signal: controller.signal
         });
+        clearTimeout(timeoutId);
         
         if (!wikiRes.ok) return { ...spot, touristSpots: [] };
         
