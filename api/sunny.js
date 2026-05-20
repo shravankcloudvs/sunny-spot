@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     }
 
     const searchRadiusMiles = parseFloat(radius) || 100;
-    const apiKey = process.env.OPENWEATHER_API_KEY || process.env.WEATHER_API_KEY;
+    const apiKey = process.env.OPENWEATHER_API_KEY || process.env.WEATHER_API_KEY || "fcd60cc0ebe020cd30a4d2ae43fd4005";
     if (!apiKey) {
       return res.status(500).json({ error: "Server configuration error: Missing API key." });
     }
