@@ -120,7 +120,8 @@ export default function App() {
       setSunnySpots(res.data);
     } catch (err) {
       console.error("Error fetching weather spots:", err);
-      setApiError("Server failed to fetch weather data. Your Vercel OpenWeather API key might be invalid or expired.");
+      const serverMsg = err.response?.data?.error || err.message;
+      setApiError(`Server Error: ${serverMsg}. Please check your Vercel API key.`);
     } finally {
       setLoading(false);
     }
