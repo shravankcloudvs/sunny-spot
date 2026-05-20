@@ -12,6 +12,7 @@ export default function App() {
   const [theme, setTheme] = useState("dark"); // 'dark' or 'light'
   const [openSpots, setOpenSpots] = useState({}); // Keep track of open accordions by city name
   const [searched, setSearched] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
   // New states for location autocomplete
   const [searchQuery, setSearchQuery] = useState("");
@@ -105,6 +106,7 @@ export default function App() {
     setSearched(true);
     setSunnySpots([]);
     setOpenSpots({});
+    setApiError(null);
 
     try {
       const res = await axios.get("/api/sunny", {
@@ -118,6 +120,7 @@ export default function App() {
       setSunnySpots(res.data);
     } catch (err) {
       console.error("Error fetching weather spots:", err);
+      setApiError("Server failed to fetch weather data. Your Vercel OpenWeather API key might be invalid or expired.");
     } finally {
       setLoading(false);
     }
@@ -424,12 +427,12 @@ export default function App() {
                 {type === "sunny" ? "☁️" : "🏜️"}
               </span>
               <h3 className="status-title">
-                No {type === "sunny" ? "Sunny" : "Snowy"} spots found
+                {apiError ? "Server Error" : `No ${type === "sunny" ? "Sunny" : "Snowy"} spots found`}
               </h3>
               <p className="status-desc">
-                We couldn't find any {type === "sunny" ? "sunny" : "snowy"}{" "}
-                spots within a {radius} mile radius near <strong>{selectedPlace}</strong>. Try expanding your search
-                radius or searching for the opposite weather mode!
+                {apiError ? apiError : `We couldn't find any ${type === "sunny" ? "sunny" : "snowy"} spots within a ${radius} mile radius near `}
+                {!apiError && <strong>{selectedPlace}</strong>}
+                {!apiError && `. Try expanding your search radius or searching for the opposite weather mode!`}
               </p>
             </div>
           )}
