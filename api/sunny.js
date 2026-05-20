@@ -66,8 +66,8 @@ export default async function handler(req, res) {
     // Sort by distance (closest first)
     matchingSpots.sort((a, b) => a.distance - b.distance);
 
-    // Limit to top 8 to prevent slow page load and avoid hitting Wikipedia API limits
-    const limitedSpots = matchingSpots.slice(0, 8);
+    // Limit to top 4 to prevent Vercel Serverless Function timeouts (10s limit)
+    const limitedSpots = matchingSpots.slice(0, 4);
 
     // 3. Concurrently fetch nearby tourist spots/landmarks from Wikipedia for matching cities
     const enrichedSpots = await Promise.all(limitedSpots.map(async (spot) => {
@@ -77,7 +77,8 @@ export default async function handler(req, res) {
         const wikiRes = await fetch(wikiUrl, {
           headers: {
             "User-Agent": "SunnySpotApp/1.0 (contact@example.com) fetch/1.0"
-          }
+          },
+          signal: AbortSignal.timeout(2000) // Max 2 seconds for Wikipedia API
         });
         
         if (!wikiRes.ok) return { ...spot, touristSpots: [] };

@@ -120,8 +120,11 @@ export default function App() {
       setSunnySpots(res.data);
     } catch (err) {
       console.error("Error fetching weather spots:", err);
-      const serverMsg = err.response?.data?.error || err.message;
-      setApiError(`Server Error: ${serverMsg}. Please check your Vercel API key.`);
+      const errorData = err.response?.data?.error;
+      const serverMsg = typeof errorData === 'object' 
+        ? (errorData.message || JSON.stringify(errorData)) 
+        : (errorData || err.message);
+      setApiError(`Server Error: ${serverMsg}`);
     } finally {
       setLoading(false);
     }
