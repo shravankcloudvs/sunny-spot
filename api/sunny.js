@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   try {
     const { lat, lon, radius, type = 'sunny' } = req.query;
 
