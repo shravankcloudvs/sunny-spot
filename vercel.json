@@ -5,7 +5,7 @@
     { "src": "api/sunny.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/sunny", "dest": "/api/sunny.js" },
+    { "src": "/api/sunny", "dest": "/api/sunny" },
     { "src": "/(.*)", "dest": "client/$1" }
   ]
 }
